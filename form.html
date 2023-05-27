@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="en" and dir ="Itr">
+    <html>
+        <head>
+            <title> Siren </title>
+            <link rel="stylesheet" href="form.css">
+        
+        </head>    
+        <body>
+          <div class="box">
+            <script  defer src="form.js"> </script>
+            <h1>Siren</h1>
+            <div id="formContainer">
+                <div id="header"> </div>
+            <input type="email" placeholder="Enter Email Id" id="email">
+            <input type="password" placeholder="Enter Password" id="password">
+            <button type="signUp4" onclick= "signUp()" id="signUp1"> Sign Up </button>
+            <button type="signIn"  sonclick="signIn()" id="signIn1" href="index.html"> Sign In </button>
+            <!-- <button onclick="signOut()" id="signOut"> Sign Out </button> -->
+    
+            </div>
+          </div>
+          </body>
+          
+            
+        </body>
+
+        <script type="module">
+                        // Import the functions you need from the SDKs you need
+
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+            import { getDatabase, set, ref, update } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+            import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js";
+
+
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+          
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+              apiKey: "AIzaSyB-y-kLHeGpJ1NqWP5S5QVI2jfAUShv0xc",
+              authDomain: "siren1-f3368.firebaseapp.com",
+              projectId: "siren1-f3368",
+              storageBucket: "siren1-f3368.appspot.com",
+              messagingSenderId: "572415384157",
+              appId: "1:572415384157:web:eec3d4ce8cc5d183e14bb4"
+            };
+          
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const database = getDatabase(app);
+            const auth = getAuth();
+            
+        
+// }
+
+
+
+            signUp1.addEventListener('click', (e)=>
+            {
+                var email = document.getElementById("email").value;
+                var password= document.getElementById("password").value;
+                createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    set(ref(database , 'users/' + user.uid),{
+        email: email
+        
+    })
+    alert('user created');
+    //If you want to redirect somewhere after sign in code it here.
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert(errorMessage);
+    // ..
+  });
+            });
+
+
+    signIn1.addEventListener('click', (event)=>
+    {
+        var email = document.getElementById("email").value;
+        var password= document.getElementById("password").value;
+        
+        signInWithEmailAndPassword(auth, email, password)
+        
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    const dt= new Date();
+    update(ref(database , 'users/' + user.uid),{
+        last_login: dt
+        
+    })
+    alert('User logged in')
+    window.location.href = 'index.html';
+
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+
+    alert(errorMessage);
+  });
+
+        
+  
+
+    //    auth.onAuthStateChanged(user => {
+
+    //     if(user) {
+    //         const uid = user.uid;
+            
+    //       window.location.href = 'index.html'; //After successful login, user will be redirected to home.html
+    //     }
+    //      else {
+    //         event.preventDefault();
+    //         // user.preventDefault();
+    // // User is signed out
+    // // ...
+    //    }
+
+    //   });
+
+    });
+
+        </script>
+    
+
+    
+</html>
